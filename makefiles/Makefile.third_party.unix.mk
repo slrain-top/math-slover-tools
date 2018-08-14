@@ -526,7 +526,7 @@ build_cgl: dependencies/install/lib/libCgl.$L
 CGL_SRCDIR = dependencies/sources/Cgl-$(CGL_TAG)
 dependencies/install/lib/libCgl.$L: build_clp $(CGL_SRCDIR) $(PATCHELF)
 	cd $(CGL_SRCDIR) && $(SET_COMPILER) ./configure \
-    --prefix=$(OR_ROOT_FULL)/dependencies/install \
+    --prefix="$(OR_ROOT_FULL)/dependencies/install" \
     --disable-debug \
     --without-blas \
     --without-lapack \
