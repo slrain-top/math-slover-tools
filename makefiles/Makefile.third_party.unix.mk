@@ -694,7 +694,7 @@ COINUTILS_SRCDIR = dependencies/sources/CoinUtils-$(COINUTILS_TAG)
 dependencies/install/lib/libCoinUtils.$L: $(COINUTILS_SRCDIR) $(PATCHELF) | \
  dependencies/install/lib/pkgconfig dependencies/install/include/coin
 	cd $(COINUTILS_SRCDIR) && $(SET_COMPILER) ./configure \
-    --prefix=$(OR_ROOT_FULL)/dependencies/install \
+    --prefix="$(OR_ROOT_FULL)/dependencies/install" \
     --disable-debug \
     --without-blas \
     --without-lapack \
@@ -716,6 +716,7 @@ endif
 $(COINUTILS_SRCDIR): | dependencies/sources
 	-$(DELREC) $(COINUTILS_SRCDIR)
 	git clone --quiet -b releases/$(COINUTILS_TAG) https://github.com/coin-or/CoinUtils.git $(COINUTILS_SRCDIR)
+	cd $(COINUTILS_SRCDIR) && git apply "../../../patches/coinutils.patch"
 
 # This is needed to find COINUTILS include files.
 COINUTILS_COIN_DIR = $(firstword $(wildcard $(UNIX_COINUTILS_DIR)/include/coinutils/coin \
