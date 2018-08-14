@@ -455,7 +455,7 @@ build_cbc: dependencies/install/lib/libCbc.$L
 CBC_SRCDIR = dependencies/sources/Cbc-$(CBC_TAG)
 dependencies/install/lib/libCbc.$L: build_cgl $(CBC_SRCDIR) $(PATCHELF)
 	cd $(CBC_SRCDIR) && $(SET_COMPILER) ./configure \
-    --prefix=$(OR_ROOT_FULL)/dependencies/install \
+    --prefix="$(OR_ROOT_FULL)/dependencies/install" \
     --disable-debug \
     --without-blas \
     --without-lapack \
