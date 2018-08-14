@@ -570,7 +570,7 @@ build_clp: dependencies/install/lib/libClp.$L
 CLP_SRCDIR = dependencies/sources/Clp-$(CLP_TAG)
 dependencies/install/lib/libClp.$L: build_osi $(CLP_SRCDIR) $(PATCHELF)
 	cd $(CLP_SRCDIR) && $(SET_COMPILER) ./configure \
-    --prefix=$(OR_ROOT_FULL)/dependencies/install \
+    --prefix="$(OR_ROOT_FULL)/dependencies/install" \
     --disable-debug \
     --without-blas \
     --without-lapack \
