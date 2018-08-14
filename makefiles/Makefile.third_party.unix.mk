@@ -640,7 +640,7 @@ build_osi: dependencies/install/lib/libOsi.$L
 OSI_SRCDIR = dependencies/sources/Osi-$(OSI_TAG)
 dependencies/install/lib/libOsi.$L: build_coinutils $(OSI_SRCDIR) $(PATCHELF)
 	cd $(OSI_SRCDIR) && $(SET_COMPILER) ./configure \
-    --prefix=$(OR_ROOT_FULL)/dependencies/install \
+    --prefix="$(OR_ROOT_FULL)/dependencies/install" \
     --disable-debug \
     --without-blas \
     --without-lapack \
@@ -671,6 +671,7 @@ endif
 $(OSI_SRCDIR): | dependencies/sources
 	-$(DELREC) $(OSI_SRCDIR)
 	git clone --quiet -b releases/$(OSI_TAG) https://github.com/coin-or/Osi.git $(OSI_SRCDIR)
+	cd $(OSI_SRCDIR) && git apply "../../../patches/osi.patch"
 
 # This is needed to find OSI include files.
 OSI_COIN_DIR = $(firstword $(wildcard $(UNIX_OSI_DIR)/include/osi/coin \
