@@ -200,6 +200,7 @@ public class CapacitatedVehicleRoutingProblemWithTimeWindows {
     model.addDimension(demandCallback, 0, vehicleCapacity, true, "capacity");
 
     // Setting up vehicles
+    final List<NodeEvaluator2> callbacks = new ArrayList();
     for (int vehicle = 0; vehicle < numberOfVehicles; ++vehicle) {
       final int costCoefficient = vehicleCostCoefficients.get(vehicle);
       NodeEvaluator2 manhattanCostCallback = new NodeEvaluator2() {
@@ -218,6 +219,7 @@ public class CapacitatedVehicleRoutingProblemWithTimeWindows {
         }
       };
       model.setArcCostEvaluatorOfVehicle(manhattanCostCallback, vehicle);
+      callbacks.add(manhattanCostCallback);
       model.cumulVar(model.start(vehicle), "time").setMin(vehicleStartTime.get(vehicle));
       model.cumulVar(model.end(vehicle), "time").setMax(vehicleEndTime.get(vehicle));
     }
