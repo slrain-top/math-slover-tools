@@ -631,8 +631,9 @@ namespace operations_research {
 // SequenceVar
 %unignore SequenceVar;
 // Ignored:
-%ignore SequenceVar::ComputePossibleFirstsAndLasts;
 %ignore SequenceVar::FillSequence;
+// Methods:
+%unignore SequenceVar::ComputePossibleFirstsAndLasts;
 
 // Constraint
 %feature("director") Constraint;
