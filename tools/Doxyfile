@@ -441,7 +441,7 @@ EXTRACT_ALL            = YES
 # be included in the documentation.
 # The default value is: NO.
 
-EXTRACT_PRIVATE        = YES
+EXTRACT_PRIVATE        = NO
 
 # If the EXTRACT_PACKAGE tag is set to YES, all members with package or internal
 # scope will be included in the documentation.
@@ -797,7 +797,7 @@ INPUT                  = \
                        ortools/constraint_solver/routing_parameters.h \
                        ortools/constraint_solver/routing.h \
                        ortools/constraint_solver/routing_index_manager.h \
-                       ortools/algorithms \
+                       #ortools/algorithms \
                        #ortools/algorithms/doc \
                        #ortools/algorithms/samples \
                        #ortools/gen/ortools/algorithms \
@@ -846,7 +846,8 @@ INPUT_ENCODING         = UTF-8
 
 FILE_PATTERNS          = *.dox \
                          *.h \
-                         *.py \
+                         *.cc \
+                         #*.py \
                          #*.java \
                          #*.cs \
                          #*.md \
@@ -1083,7 +1084,7 @@ CLANG_ASSISTED_PARSING = YES
 # specified with INPUT and INCLUDE_PATH.
 # This tag requires that the tag CLANG_ASSISTED_PARSING is set to YES.
 
-CLANG_OPTIONS          =
+CLANG_OPTIONS          = -std=c++11
 
 #---------------------------------------------------------------------------
 # Configuration options related to the alphabetical class index
