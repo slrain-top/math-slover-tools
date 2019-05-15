@@ -11,55 +11,54 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-// Declaration of the core objects for the constraint solver.
-//
-// The literature around constraint programming is extremely dense but one
-// can find some basic introductions in the following links:
-//   - http://en.wikipedia.org/wiki/Constraint_programming
-//   - http://kti.mff.cuni.cz/~bartak/constraints/index.html
-//
-// Here is a very simple Constraint Programming problem:
-//
-//   Knowing that we see 56 legs and 20 heads, how many pheasants and rabbits
-//   are we looking at?
-//
-// Here is some simple Constraint Programming code to find out:
-//
-//   void pheasant() {
-//     Solver s("pheasant");
-//     IntVar* const p = s.MakeIntVar(0, 20, "pheasant"));
-//     IntVar* const r = s.MakeIntVar(0, 20, "rabbit"));
-//     IntExpr* const legs = s.MakeSum(s.MakeProd(p, 2), s.MakeProd(r, 4));
-//     IntExpr* const heads = s.MakeSum(p, r);
-//     Constraint* const ct_legs = s.MakeEquality(legs, 56);
-//     Constraint* const ct_heads = s.MakeEquality(heads, 20);
-//     s.AddConstraint(ct_legs);
-//     s.AddConstraint(ct_heads);
-//     DecisionBuilder* const db = s.MakePhase(p, r,
-//                                             Solver::CHOOSE_FIRST_UNBOUND,
-//                                             Solver::ASSIGN_MIN_VALUE);
-//     s.NewSearch(db);
-//     CHECK(s.NextSolution());
-//     LOG(INFO) << "rabbits -> " << r->Value() << ", pheasants -> "
-//               << p->Value();
-//     LOG(INFO) << s.DebugString();
-//     s.EndSearch();
-//   }
-//
-// which outputs:
-//
-//   rabbits -> 8, pheasants -> 12
-//   Solver(name = "pheasant",
-//          state = OUTSIDE_SEARCH,
-//          branches = 0,
-//          fails = 0,
-//          decisions = 0
-//          propagation loops = 11,
-//          demons Run = 25,
-//          Run time = 0 ms)
-//
-//
+/// @file
+/// Declaration of the core objects for the constraint solver.
+///
+/// The literature around constraint programming is extremely dense but one
+/// can find some basic introductions in the following links:
+///   - http://en.wikipedia.org/wiki/Constraint_programming
+///   - http://kti.mff.cuni.cz/~bartak/constraints/index.html
+///
+/// Here is a very simple Constraint Programming problem:
+///
+///   Knowing that we see 56 legs and 20 heads, how many pheasants and rabbits
+///   are we looking at?
+///
+/// Here is some simple Constraint Programming code to find out:
+/// @code{.cpp}
+///   void pheasant() {
+///     Solver s("pheasant");
+///     IntVar* const p = s.MakeIntVar(0, 20, "pheasant"));
+///     IntVar* const r = s.MakeIntVar(0, 20, "rabbit"));
+///     IntExpr* const legs = s.MakeSum(s.MakeProd(p, 2), s.MakeProd(r, 4));
+///     IntExpr* const heads = s.MakeSum(p, r);
+///     Constraint* const ct_legs = s.MakeEquality(legs, 56);
+///     Constraint* const ct_heads = s.MakeEquality(heads, 20);
+///     s.AddConstraint(ct_legs);
+///     s.AddConstraint(ct_heads);
+///     DecisionBuilder* const db = s.MakePhase(p, r,
+///                                             Solver::CHOOSE_FIRST_UNBOUND,
+///                                             Solver::ASSIGN_MIN_VALUE);
+///     s.NewSearch(db);
+///     CHECK(s.NextSolution());
+///     LOG(INFO) << "rabbits -> " << r->Value() << ", pheasants -> "
+///               << p->Value();
+///     LOG(INFO) << s.DebugString();
+///     s.EndSearch();
+///   }
+/// @endcode
+/// which outputs:
+/// @verbatim
+///   rabbits -> 8, pheasants -> 12
+///   Solver(name = "pheasant",
+///          state = OUTSIDE_SEARCH,
+///          branches = 0,
+///          fails = 0,
+///          decisions = 0
+///          propagation loops = 11,
+///          demons Run = 25,
+///          Run time = 0 ms)
+/// @endverbatim
 
 #ifndef OR_TOOLS_CONSTRAINT_SOLVER_CONSTRAINT_SOLVER_H_
 #define OR_TOOLS_CONSTRAINT_SOLVER_CONSTRAINT_SOLVER_H_
@@ -150,9 +149,9 @@ struct Trail;
 template <class T>
 class SimpleRevFIFO;
 
-// This struct holds all parameters for the default search.
-// DefaultPhaseParameters is only used by Solver::MakeDefaultPhase methods.
-// Note this is for advanced users only.
+/// @brief This struct holds all parameters for the default search.
+/// @details DefaultPhaseParameters is only used by Solver::MakeDefaultPhase methods.
+/// Note this is for advanced users only.
 struct DefaultPhaseParameters {
  public:
   enum VariableSelection {
@@ -168,8 +167,8 @@ struct DefaultPhaseParameters {
 
   enum DisplayLevel { NONE = 0, NORMAL = 1, VERBOSE = 2 };
 
-  // This parameter describes how the next variable to instantiate
-  // will be chosen.
+  /// This parameter describes how the next variable to instantiate
+  /// will be chosen.
   VariableSelection var_selection_schema;
 
   // This parameter describes which value to select for a given var.
@@ -213,32 +212,28 @@ struct DefaultPhaseParameters {
 };
 
 /////////////////////////////////////////////////////////////////////
-//
-// Solver Class
-//
-// A solver represents the main computation engine. It implements the entire
-// range of Constraint Programming protocols:
-//   - Reversibility
-//   - Propagation
-//   - Search
-//
-// Usually, Constraint Programming code consists of
-//   - the creation of the Solver,
-//   - the creation of the decision variables of the model,
-//   - the creation of the constraints of the model and their addition to the
-//     solver() through the AddConstraint() method,
-//   - the creation of the main DecisionBuilder class,
-//   - the launch of the solve() method with the decision builder.
-//
-// For the time being, Solver is neither MT_SAFE nor MT_HOT.
-/////////////////////////////////////////////////////////////////////
-//
+/// @brief Solver Class.
+/// @details A solver represents the main computation engine. It implements the entire
+/// range of Constraint Programming protocols:
+///   - Reversibility
+///   - Propagation
+///   - Search
+///
+/// Usually, Constraint Programming code consists of
+///   - the creation of the Solver,
+///   - the creation of the decision variables of the model,
+///   - the creation of the constraints of the model and their addition to the
+///     solver() through the AddConstraint() method,
+///   - the creation of the main DecisionBuilder class,
+///   - the launch of the solve() method with the decision builder.
+///
+/// For the time being, Solver is neither MT_SAFE nor MT_HOT.
 class Solver {
  public:
-  // Holds semantic information stating that the 'expression' has been
-  // cast into 'variable' using the Var() method, and that
-  // 'maintainer' is responsible for maintaining the equality between
-  // 'variable' and 'expression'.
+  /// Holds semantic information stating that the 'expression' has been
+  /// cast into 'variable' using the Var() method, and that
+  /// 'maintainer' is responsible for maintaining the equality between
+  /// 'variable' and 'expression'.
   struct IntegerCastInfo {
     IntegerCastInfo()
         : variable(nullptr), expression(nullptr), maintainer(nullptr) {}
@@ -249,119 +244,119 @@ class Solver {
     Constraint* maintainer;
   };
 
-  // Number of priorities for demons.
+  /// Number of priorities for demons.
   static const int kNumPriorities = 3;
 
-  // This enum describes the strategy used to select the next branching
-  // variable at each node during the search.
+  /// This enum describes the strategy used to select the next branching
+  /// variable at each node during the search.
   enum IntVarStrategy {
-    // The default behavior is CHOOSE_FIRST_UNBOUND.
+    /// The default behavior is CHOOSE_FIRST_UNBOUND.
     INT_VAR_DEFAULT,
 
-    // The simple selection is CHOOSE_FIRST_UNBOUND.
+    /// The simple selection is CHOOSE_FIRST_UNBOUND.
     INT_VAR_SIMPLE,
 
-    // Select the first unbound variable.
-    // Variables are considered in the order of the vector of IntVars used
-    // to create the selector.
+    /// Select the first unbound variable.
+    /// Variables are considered in the order of the vector of IntVars used
+    /// to create the selector.
     CHOOSE_FIRST_UNBOUND,
 
-    // Randomly select one of the remaining unbound variables.
+    /// Randomly select one of the remaining unbound variables.
     CHOOSE_RANDOM,
 
-    // Among unbound variables, select the variable with the smallest size,
-    // i.e., the smallest number of possible values.
-    // In case of a tie, the selected variables is the one with the lowest min
-    // value.
-    // In case of a tie, the first one is selected, first being defined by the
-    // order in the vector of IntVars used to create the selector.
+    /// Among unbound variables, select the variable with the smallest size,
+    /// i.e., the smallest number of possible values.
+    /// In case of a tie, the selected variables is the one with the lowest min
+    /// value.
+    /// In case of a tie, the first one is selected, first being defined by the
+    /// order in the vector of IntVars used to create the selector.
     CHOOSE_MIN_SIZE_LOWEST_MIN,
 
-    // Among unbound variables, select the variable with the smallest size,
-    // i.e., the smallest number of possible values.
-    // In case of a tie, the selected variable is the one with the highest min
-    // value.
-    // In case of a tie, the first one is selected, first being defined by the
-    // order in the vector of IntVars used to create the selector.
+    /// Among unbound variables, select the variable with the smallest size,
+    /// i.e., the smallest number of possible values.
+    /// In case of a tie, the selected variable is the one with the highest min
+    /// value.
+    /// In case of a tie, the first one is selected, first being defined by the
+    /// order in the vector of IntVars used to create the selector.
     CHOOSE_MIN_SIZE_HIGHEST_MIN,
 
-    // Among unbound variables, select the variable with the smallest size,
-    // i.e., the smallest number of possible values.
-    // In case of a tie, the selected variables is the one with the lowest max
-    // value.
-    // In case of a tie, the first one is selected, first being defined by the
-    // order in the vector of IntVars used to create the selector.
+    /// Among unbound variables, select the variable with the smallest size,
+    /// i.e., the smallest number of possible values.
+    /// In case of a tie, the selected variables is the one with the lowest max
+    /// value.
+    /// In case of a tie, the first one is selected, first being defined by the
+    /// order in the vector of IntVars used to create the selector.
     CHOOSE_MIN_SIZE_LOWEST_MAX,
 
-    // Among unbound variables, select the variable with the smallest size,
-    // i.e., the smallest number of possible values.
-    // In case of a tie, the selected variable is the one with the highest max
-    // value.
-    // In case of a tie, the first one is selected, first being defined by the
-    // order in the vector of IntVars used to create the selector.
+    /// Among unbound variables, select the variable with the smallest size,
+    /// i.e., the smallest number of possible values.
+    /// In case of a tie, the selected variable is the one with the highest max
+    /// value.
+    /// In case of a tie, the first one is selected, first being defined by the
+    /// order in the vector of IntVars used to create the selector.
     CHOOSE_MIN_SIZE_HIGHEST_MAX,
 
-    // Among unbound variables, select the variable with the smallest minimal
-    // value.
-    // In case of a tie, the first one is selected, "first" defined by the
-    // order in the vector of IntVars used to create the selector.
+    /// Among unbound variables, select the variable with the smallest minimal
+    /// value.
+    /// In case of a tie, the first one is selected, "first" defined by the
+    /// order in the vector of IntVars used to create the selector.
     CHOOSE_LOWEST_MIN,
 
-    // Among unbound variables, select the variable with the highest maximal
-    // value.
-    // In case of a tie, the first one is selected, first being defined by the
-    // order in the vector of IntVars used to create the selector.
+    /// Among unbound variables, select the variable with the highest maximal
+    /// value.
+    /// In case of a tie, the first one is selected, first being defined by the
+    /// order in the vector of IntVars used to create the selector.
     CHOOSE_HIGHEST_MAX,
 
-    // Among unbound variables, select the variable with the smallest size.
-    // In case of a tie, the first one is selected, first being defined by the
-    // order in the vector of IntVars used to create the selector.
+    /// Among unbound variables, select the variable with the smallest size.
+    /// In case of a tie, the first one is selected, first being defined by the
+    /// order in the vector of IntVars used to create the selector.
     CHOOSE_MIN_SIZE,
 
-    // Among unbound variables, select the variable with the highest size.
-    // In case of a tie, the first one is selected, first being defined by the
-    // order in the vector of IntVars used to create the selector.
+    /// Among unbound variables, select the variable with the highest size.
+    /// In case of a tie, the first one is selected, first being defined by the
+    /// order in the vector of IntVars used to create the selector.
     CHOOSE_MAX_SIZE,
 
-    // Among unbound variables, select the variable with the largest
-    // gap between the first and the second values of the domain.
+    /// Among unbound variables, select the variable with the largest
+    /// gap between the first and the second values of the domain.
     CHOOSE_MAX_REGRET_ON_MIN,
 
-    // Selects the next unbound variable on a path, the path being defined by
-    // the variables: var[i] corresponds to the index of the next of i.
+    /// Selects the next unbound variable on a path, the path being defined by
+    /// the variables: var[i] corresponds to the index of the next of i.
     CHOOSE_PATH,
   };
   // TODO(user): add HIGHEST_MIN and LOWEST_MAX.
 
-  // This enum describes the strategy used to select the next variable value to
-  // set.
+  /// This enum describes the strategy used to select the next variable value to
+  /// set.
   enum IntValueStrategy {
-    // The default behavior is ASSIGN_MIN_VALUE.
+    /// The default behavior is ASSIGN_MIN_VALUE.
     INT_VALUE_DEFAULT,
 
-    // The simple selection is ASSIGN_MIN_VALUE.
+    /// The simple selection is ASSIGN_MIN_VALUE.
     INT_VALUE_SIMPLE,
 
-    // Selects the min value of the selected variable.
+    /// Selects the min value of the selected variable.
     ASSIGN_MIN_VALUE,
 
-    // Selects the max value of the selected variable.
+    /// Selects the max value of the selected variable.
     ASSIGN_MAX_VALUE,
 
-    // Selects randomly one of the possible values of the selected variable.
+    /// Selects randomly one of the possible values of the selected variable.
     ASSIGN_RANDOM_VALUE,
 
-    // Selects the first possible value which is the closest to the center
-    // of the domain of the selected variable.
-    // The center is defined as (min + max) / 2.
+    /// Selects the first possible value which is the closest to the center
+    /// of the domain of the selected variable.
+    /// The center is defined as (min + max) / 2.
     ASSIGN_CENTER_VALUE,
 
-    // Split the domain in two around the center, and choose the lower
-    // part first.
+    /// Split the domain in two around the center, and choose the lower
+    /// part first.
     SPLIT_LOWER_HALF,
 
-    // Split the domain in two around the center, and choose the lower
-    // part first.
+    /// Split the domain in two around the center, and choose the lower
+    /// part first.
     SPLIT_UPPER_HALF,
   };
 
@@ -412,18 +407,20 @@ class Solver {
     INTERVAL_SET_TIMES_BACKWARD
   };
 
-  // This enum is used in Solver::MakeOperator to specify the neighborhood to
-  // create.
+  /// This enum is used in Solver::MakeOperator to specify the neighborhood to
+  /// create.
   enum LocalSearchOperators {
-    // Operator which reverses a sub-chain of a path. It is called TwoOpt
-    // because it breaks two arcs on the path; resulting paths are called
-    // two-optimal.
-    // Possible neighbors for the path 1 -> 2 -> 3 -> 4 -> 5
-    // (where (1, 5) are first and last nodes of the path and can therefore not
-    // be moved):
-    //   1 -> [3 -> 2] -> 4  -> 5
-    //   1 -> [4 -> 3  -> 2] -> 5
-    //   1 ->  2 -> [4 -> 3] -> 5
+    /// Operator which reverses a sub-chain of a path. It is called TwoOpt
+    /// because it breaks two arcs on the path; resulting paths are called
+    /// two-optimal.
+    /// Possible neighbors for the path 1 -> 2 -> 3 -> 4 -> 5
+    /// (where (1, 5) are first and last nodes of the path and can therefore not
+    /// be moved):
+    /// @code
+    ///   1 -> [3 -> 2] -> 4  -> 5
+    ///   1 -> [4 -> 3  -> 2] -> 5
+    ///   1 ->  2 -> [4 -> 3] -> 5
+    /// @endcode
     TWOOPT,
 
     // Relocate: OROPT and RELOCATE.
@@ -959,42 +956,42 @@ class Solver {
   // are relative to this time.
   absl::Time Now() const;
 
-  // DEPRECATED: Use Now() instead.
-  // Time elapsed, in ms since the creation of the solver.
+  /// @deprecated Use Now() instead.
+  /// Time elapsed, in ms since the creation of the solver.
   int64 wall_time() const;
 
-  // The number of branches explored since the creation of the solver.
+  /// The number of branches explored since the creation of the solver.
   int64 branches() const { return branches_; }
 
-  // The number of solutions found since the start of the search.
+  /// The number of solutions found since the start of the search.
   int64 solutions() const;
 
-  // The number of unchecked solutions found by local search.
+  /// The number of unchecked solutions found by local search.
   int64 unchecked_solutions() const;
 
-  // The number of demons executed during search for a given priority.
+  /// The number of demons executed during search for a given priority.
   int64 demon_runs(DemonPriority p) const { return demon_runs_[p]; }
 
-  // The number of failures encountered since the creation of the solver.
+  /// The number of failures encountered since the creation of the solver.
   int64 failures() const { return fails_; }
 
-  // The number of neighbors created.
+  /// The number of neighbors created.
   int64 neighbors() const { return neighbors_; }
 
-  // The number of filtered neighbors (neighbors accepted by filters).
+  /// The number of filtered neighbors (neighbors accepted by filters).
   int64 filtered_neighbors() const { return filtered_neighbors_; }
 
-  // The number of accepted neighbors.
+  /// The number of accepted neighbors.
   int64 accepted_neighbors() const { return accepted_neighbors_; }
 
-  // The stamp indicates how many moves in the search tree we have performed.
-  // It is useful to detect if we need to update same lazy structures.
+  /// The stamp indicates how many moves in the search tree we have performed.
+  /// It is useful to detect if we need to update same lazy structures.
   uint64 stamp() const;
 
-  // The fail_stamp() is incremented after each backtrack.
+  /// The fail_stamp() is incremented after each backtrack.
   uint64 fail_stamp() const;
 
-  // The direction of optimization, getter and setter.
+  /// The direction of optimization, getter and setter.
   OptimizationDirection optimization_direction() const {
     return optimization_direction_;
   }
@@ -1004,42 +1001,42 @@ class Solver {
 
   // ---------- Make Factory ----------
 
-  // All factories (MakeXXX methods) encapsulate creation of objects
-  // through RevAlloc(). Hence, the Solver used for allocating the
-  // returned object will retain ownership of the allocated memory.
-  // Destructors are called upon backtrack, or when the Solver is
-  // itself destructed.
+  /// All factories (MakeXXX methods) encapsulate creation of objects
+  /// through RevAlloc(). Hence, the Solver used for allocating the
+  /// returned object will retain ownership of the allocated memory.
+  /// Destructors are called upon backtrack, or when the Solver is
+  /// itself destructed.
 
   // ----- Int Variables and Constants -----
 
-  // MakeIntVar will create the best range based int var for the bounds given.
+  /// MakeIntVar will create the best range based int var for the bounds given.
   IntVar* MakeIntVar(int64 min, int64 max, const std::string& name);
 
-  // MakeIntVar will create a variable with the given sparse domain.
+  /// MakeIntVar will create a variable with the given sparse domain.
   IntVar* MakeIntVar(const std::vector<int64>& values, const std::string& name);
 
-  // MakeIntVar will create a variable with the given sparse domain.
+  /// MakeIntVar will create a variable with the given sparse domain.
   IntVar* MakeIntVar(const std::vector<int>& values, const std::string& name);
 
-  // MakeIntVar will create the best range based int var for the bounds given.
+  /// MakeIntVar will create the best range based int var for the bounds given.
   IntVar* MakeIntVar(int64 min, int64 max);
 
-  // MakeIntVar will create a variable with the given sparse domain.
+  /// MakeIntVar will create a variable with the given sparse domain.
   IntVar* MakeIntVar(const std::vector<int64>& values);
 
-  // MakeIntVar will create a variable with the given sparse domain.
+  /// MakeIntVar will create a variable with the given sparse domain.
   IntVar* MakeIntVar(const std::vector<int>& values);
 
-  // MakeBoolVar will create a variable with a {0, 1} domain.
+  /// MakeBoolVar will create a variable with a {0, 1} domain.
   IntVar* MakeBoolVar(const std::string& name);
 
-  // MakeBoolVar will create a variable with a {0, 1} domain.
+  /// MakeBoolVar will create a variable with a {0, 1} domain.
   IntVar* MakeBoolVar();
 
-  // IntConst will create a constant expression.
+  /// IntConst will create a constant expression.
   IntVar* MakeIntConst(int64 val, const std::string& name);
 
-  // IntConst will create a constant expression.
+  /// IntConst will create a constant expression.
   IntVar* MakeIntConst(int64 val);
 
   // This method will append the vector vars with 'var_count' variables
@@ -2959,7 +2956,7 @@ class Solver {
   }
 
  private:
-  void Init();  // Initialization. To be called by the constructors only.
+  void Init();  ///< Initialization. To be called by the constructors only.
   void PushState(MarkerType t, const StateInfo& info);
   MarkerType PopState(StateInfo* info);
   void PushSentinel(int magic_code);
@@ -3071,22 +3068,22 @@ class Solver {
   ACMRandom random_;
   uint64 fail_stamp_;
   std::unique_ptr<Decision> balancing_decision_;
-  // intercept failures
+  /// intercept failures
   std::function<void()> fail_intercept_;
-  // Demon monitor
+  /// Demon monitor
   DemonProfiler* const demon_profiler_;
-  // Local search mode
+  /// Local search mode
   bool use_fast_local_search_;
-  // Local search profiler monitor
+  /// Local search profiler monitor
   LocalSearchProfiler* const local_search_profiler_;
-  // Local search state.
+  /// Local search state.
   std::unique_ptr<Assignment> local_search_state_;
 
-  // interval of constants cached, inclusive:
+  /// interval of constants cached, inclusive:
   enum { MIN_CACHED_INT_CONST = -8, MAX_CACHED_INT_CONST = 8 };
   IntVar* cached_constants_[MAX_CACHED_INT_CONST + 1 - MIN_CACHED_INT_CONST];
 
-  // Cached constraints.
+  /// Cached constraints.
   Constraint* true_constraint_;
   Constraint* false_constraint_;
 

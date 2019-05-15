@@ -65,11 +65,11 @@ struct DataModel {
 // [END data_model]
 
 // [START solution_printer]
-//! @brief Print the solution.
-//! @param[in] data Data of the problem.
-//! @param[in] manager Index manager used.
-//! @param[in] routing Routing solver used.
-//! @param[in] solution Solution found by the solver.
+// Print the solution.
+// data: Data of the problem.
+// manager: Index manager used.
+// routing: Routing solver used.
+// solution: Solution found by the solver.
 void PrintSolution(const DataModel& data, const RoutingIndexManager& manager,
                    const RoutingModel& routing, const Assignment& solution) {
   LOG(INFO) << "Objective: " << solution.ObjectiveValue();
