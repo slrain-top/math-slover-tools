@@ -20,7 +20,6 @@
 // [END import]
 
 namespace operations_research {
-namespace algorithms {
 
 void SimpleKnapsackProgram() {
   // [START solver]
@@ -71,11 +70,10 @@ void SimpleKnapsackProgram() {
   // [END print_solution]
 }
 
-}  // namespace algorithms
 }  // namespace operations_research
 
 int main() {
-  operations_research::algorithms::SimpleKnapsackProgram();
+  operations_research::SimpleKnapsackProgram();
   return EXIT_SUCCESS;
 }
 // [END program]
