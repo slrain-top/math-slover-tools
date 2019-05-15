@@ -21,7 +21,8 @@
 #include "ortools/constraint_solver/routing_parameters.h"
 // [END import]
 
-namespace operations_research {
+using namespace operations_research;
+
 // [START data_model]
 struct DataModel {
   const std::vector<std::vector<int>> locations{
@@ -140,10 +141,8 @@ void Tsp() {
   // [END print_solution]
 }
 
-}  // namespace operations_research
-
 int main(int argc, char** argv) {
-  operations_research::Tsp();
+  Tsp();
   return EXIT_SUCCESS;
 }
 // [END program]
