@@ -176,8 +176,9 @@ static void PyFunctionSolverToVoid(PyObject* pyfunc,
 }
 
 %typemap(in) std::function<void(operations_research::Solver*)> {
-  $1 = [$input](operations_research::Solver* s) {
-    return PyFunctionSolverToVoid($input, s);
+  PyObject *pyinput = $input;
+  $1 = [pyinput](operations_research::Solver* s) {
+    return PyFunctionSolverToVoid(pyinput, s);
   };
 }
 
