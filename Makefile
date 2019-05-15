@@ -141,5 +141,9 @@ endif
 
 print-%  : ; @echo $* = $($*)
 
+.PHONY: doc
+doc:
+	doxygen tools/Doxyfile
+
 .PHONY: FORCE
 FORCE:

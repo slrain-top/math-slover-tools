@@ -92,7 +92,7 @@ $(GEN_DIR)/ortools/constraint_solver/constraint_solver_java_wrap.cc: \
  $(CP_DEPS) \
  $(SRC_DIR)/ortools/constraint_solver/routing.h \
  | $(GEN_DIR)/ortools/constraint_solver $(GEN_DIR)/com/google/ortools/constraintsolver
-	$(SWIG_BINARY) $(SWIG_INC) -I$(INC_DIR) -c++ -java \
+	$(SWIG_BINARY) $(SWIG_INC) -I$(INC_DIR) -c++ -java -doxygen\
  -o $(GEN_PATH)$Sortools$Sconstraint_solver$Sconstraint_solver_java_wrap.cc \
  -package com.google.ortools.constraintsolver \
  -module main \
@@ -118,7 +118,7 @@ $(GEN_DIR)/ortools/algorithms/knapsack_solver_java_wrap.cc: \
  $(SRC_DIR)/ortools/util/java/vector.i \
  $(SRC_DIR)/ortools/algorithms/knapsack_solver.h \
  | $(GEN_DIR)/ortools/algorithms $(GEN_DIR)/com/google/ortools/algorithms
-	$(SWIG_BINARY) $(SWIG_INC) -I$(INC_DIR) -c++ -java \
+	$(SWIG_BINARY) $(SWIG_INC) -I$(INC_DIR) -c++ -java -doxygen\
  -o $(GEN_PATH)$Sortools$Salgorithms$Sknapsack_solver_java_wrap.cc \
  -package com.google.ortools.algorithms \
  -module main \
@@ -137,7 +137,7 @@ $(GEN_DIR)/ortools/graph/graph_java_wrap.cc: \
  $(SRC_DIR)/ortools/base/base.i \
  $(GRAPH_DEPS) \
  | $(GEN_DIR)/ortools/graph $(GEN_DIR)/com/google/ortools/graph
-	$(SWIG_BINARY) $(SWIG_INC) -I$(INC_DIR) -c++ -java \
+	$(SWIG_BINARY) $(SWIG_INC) -I$(INC_DIR) -c++ -java -doxygen\
  -o $(GEN_PATH)$Sortools$Sgraph$Sgraph_java_wrap.cc \
  -package com.google.ortools.graph \
  -module main \
@@ -158,7 +158,7 @@ $(GEN_DIR)/ortools/linear_solver/linear_solver_java_wrap.cc: \
  $(SRC_DIR)/ortools/util/java/vector.i \
  $(LP_DEPS) \
  | $(GEN_DIR)/ortools/linear_solver $(GEN_DIR)/com/google/ortools/linearsolver
-	$(SWIG_BINARY) $(SWIG_INC) -I$(INC_DIR) -c++ -java \
+	$(SWIG_BINARY) $(SWIG_INC) -I$(INC_DIR) -c++ -java -doxygen\
  -o $(GEN_PATH)$Sortools$Slinear_solver$Slinear_solver_java_wrap.cc \
  -package com.google.ortools.linearsolver \
  -module main_research_linear_solver \
@@ -178,7 +178,7 @@ $(GEN_DIR)/ortools/sat/sat_java_wrap.cc: \
  $(SRC_DIR)/ortools/base/base.i \
  $(SAT_DEPS) \
  | $(GEN_DIR)/ortools/sat $(GEN_DIR)/com/google/ortools/sat
-	$(SWIG_BINARY) $(SWIG_INC) -I$(INC_DIR) -c++ -java \
+	$(SWIG_BINARY) $(SWIG_INC) -I$(INC_DIR) -c++ -java -doxygen\
  -o $(GEN_PATH)$Sortools$Ssat$Ssat_java_wrap.cc \
  -package com.google.ortools.sat \
  -module main \
@@ -200,7 +200,7 @@ $(GEN_DIR)/ortools/util/util_java_wrap.cc: \
  $(SRC_DIR)/ortools/base/base.i \
  $(UTIL_DEPS) \
  | $(GEN_DIR)/ortools/util $(GEN_DIR)/com/google/ortools/util
-	$(SWIG_BINARY) $(SWIG_INC) -I$(INC_DIR) -c++ -java \
+	$(SWIG_BINARY) $(SWIG_INC) -I$(INC_DIR) -c++ -java -doxygen\
  -o $(GEN_PATH)$Sortools$Sutil$Sutil_java_wrap.cc \
  -package com.google.ortools.util \
  -module main \

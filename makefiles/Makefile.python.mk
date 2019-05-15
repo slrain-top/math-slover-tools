@@ -31,7 +31,7 @@ endif
 ifneq ($(PYTHON_EXECUTABLE),)
 ifeq ($(shell "$(PYTHON_EXECUTABLE)" -c "from sys import version_info as v; print (str(v[0]))"),3)
 PYTHON3 := true
-SWIG_PYTHON3_FLAG := -py3 -DPY3
+SWIG_PYTHON3_FLAG := -py3 -DPY3 -doxygen
 PYTHON3_CFLAGS := -DPY3
 endif
 endif
