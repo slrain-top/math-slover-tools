@@ -802,25 +802,25 @@ INPUT                  = \
                        #ortools/constraint_solver/routing_index_manager.h \
 
 INPUT += \
+  ortools/algorithms \
+  ortools/bop \
   ortools/constraint_solver \
-  #ortools/algorithms \
-  #ortools/flatzinc \
-  #ortools/bop \
-  #ortools/lp_data \
-  #ortools/glop \
-  #ortools/graph \
-  #ortools/linear_solver \
-  #ortools/sat \
-  #ortools/util
+  ortools/flatzinc \
+  ortools/glop \
+  ortools/graph \
+  ortools/linear_solver \
+  ortools/lp_data \
+  ortools/sat \
+  ortools/util
 
-#INPUT += \
-#  ortools/gen/ortools/algorithms \
-#  ortools/gen/ortools/bop \
-#  ortools/gen/ortools/constraint_solver \
-#  ortools/gen/ortools/glop \
-#  ortools/gen/ortools/graph \
-#  ortools/gen/ortools/linear_solver \
-#  ortools/gen/ortools/sat \
+INPUT += \
+  ortools/gen/ortools/algorithms \
+  ortools/gen/ortools/bop \
+  ortools/gen/ortools/constraint_solver \
+  ortools/gen/ortools/glop \
+  ortools/gen/ortools/graph \
+  ortools/gen/ortools/linear_solver \
+  ortools/gen/ortools/sat \
 
 #INPUT += \
 #  ortools/algorithms/doc \
@@ -889,7 +889,7 @@ EXCLUDE_SYMLINKS       = NO
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       =
+EXCLUDE_PATTERNS       = *_wrap.h *_wrap.cc
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -1085,7 +1085,7 @@ VERBATIM_HEADERS       = YES
 # generated with the -Duse-libclang=ON option for CMake.
 # The default value is: NO.
 
-CLANG_ASSISTED_PARSING = YES
+CLANG_ASSISTED_PARSING = NO
 
 # If clang assisted parsing is enabled you can provide the compiler with command
 # line options that you would normally use when invoking the compiler. Note that

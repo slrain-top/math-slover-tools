@@ -5,54 +5,54 @@
 // WARNING: must keep the empty line between example otherwise doxygen has an
 // undefined behaviour...
 
-/** @example tsp.cc
+/** @example{lineno} tsp.cc
  * Simple TSP example.
 */
 
-/** @example tsp_circuit_board.cc
+/** @example{lineno} tsp_circuit_board.cc
  * Simple TSP example.
 */
 
-/// @example tsp_cities.cc
+/// @example{lineno} tsp_cities.cc
 /// Simple TSP example.
 
-/// @example tsp_distance_matrix.cc
+/// @example{lineno} tsp_distance_matrix.cc
 /// Simple TSP example.
 
-/// @example vrp_capacity.cc
+/// @example{lineno} vrp_capacity.cc
 /// Simple VRP example.
 
-/// @example vrp.cc
+/// @example{lineno} vrp.cc
 /// Simple VRP example.
 
-/// @example vrp_drop_nodes.cc
+/// @example{lineno} vrp_drop_nodes.cc
 /// Simple VRP example.
 
-/// @example vrp_global_span.cc
+/// @example{lineno} vrp_global_span.cc
 /// Simple VRP example.
 
-/// @example vrp_initial_routes.cc
+/// @example{lineno} vrp_initial_routes.cc
 /// Simple VRP example.
 
-/// @example vrp_pickup_delivery.cc
+/// @example{lineno} vrp_pickup_delivery.cc
 /// Simple VRP example.
 
-/// @example vrp_pickup_delivery_fifo.cc
+/// @example{lineno} vrp_pickup_delivery_fifo.cc
 /// Simple VRP example.
 
-/// @example vrp_pickup_delivery_lifo.cc
+/// @example{lineno} vrp_pickup_delivery_lifo.cc
 /// Simple VRP example.
 
-/// @example vrp_resources.cc
+/// @example{lineno} vrp_resources.cc
 /// Simple VRP example.
 
-/// @example vrp_starts_ends.cc
+/// @example{lineno} vrp_starts_ends.cc
 /// Simple VRP example.
 
-/// @example vrp_time_windows.cc
+/// @example{lineno} vrp_time_windows.cc
 /// Simple VRP example.
 
-/// @example vrp_with_time_limit.cc
+/// @example{lineno} vrp_with_time_limit.cc
 /// Simple VRP example.
 
 /// @dir ortools/algorithms A few helper algorithms used by other OR-Tools libraries.
