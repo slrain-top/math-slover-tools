@@ -26,6 +26,7 @@
 ///
 /// Here is some simple Constraint Programming code to find out:
 /// @code{.cpp}
+///   using namespace operations_research;
 ///   void pheasant() {
 ///     Solver s("pheasant");
 ///     IntVar* const p = s.MakeIntVar(0, 20, "pheasant"));
@@ -48,7 +49,7 @@
 ///   }
 /// @endcode
 /// which outputs:
-/// @verbatim
+/// @code
 ///   rabbits -> 8, pheasants -> 12
 ///   Solver(name = "pheasant",
 ///          state = OUTSIDE_SEARCH,
@@ -58,7 +59,7 @@
 ///          propagation loops = 11,
 ///          demons Run = 25,
 ///          Run time = 0 ms)
-/// @endverbatim
+/// @endcode
 
 #ifndef OR_TOOLS_CONSTRAINT_SOLVER_CONSTRAINT_SOLVER_H_
 #define OR_TOOLS_CONSTRAINT_SOLVER_CONSTRAINT_SOLVER_H_

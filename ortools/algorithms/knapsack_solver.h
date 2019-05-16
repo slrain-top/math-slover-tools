@@ -130,25 +130,25 @@ class KnapsackSolver {
   explicit KnapsackSolver(const std::string& solver_name);
   KnapsackSolver(SolverType solver_type, const std::string& solver_name);
   virtual ~KnapsackSolver();
-  /// Initializes the solver and enters the problem to be solved.
+  //// Initializes the solver and enters the problem to be solved.
   void Init(const std::vector<int64>& profits,
             const std::vector<std::vector<int64> >& weights,
             const std::vector<int64>& capacities);
 
-  /// Solves the problem and returns the profit of the optimal solution.
+  //// Solves the problem and returns the profit of the optimal solution.
   int64 Solve();
 
-  /// Returns true if the item 'item_id' is packed in the optimal knapsack.
+  //// Returns true if the item 'item_id' is packed in the optimal knapsack.
   bool BestSolutionContains(int item_id) const;
-  /// Returns true if the solution was proven optimal.
+  //// Returns true if the solution was proven optimal.
   bool IsSolutionOptimal() const { return is_solution_optimal_; }
   std::string GetName() const;
 
   bool use_reduction() const { return use_reduction_; }
   void set_use_reduction(bool use_reduction) { use_reduction_ = use_reduction; }
 
-  /// Time limit in seconds. When a finite time limit is set the solution
-  /// obtained might not be optimal if the limit is reached.
+  //// Time limit in seconds. When a finite time limit is set the solution
+  //// obtained might not be optimal if the limit is reached.
   void set_time_limit(double time_limit_seconds) {
     time_limit_seconds_ = time_limit_seconds;
     time_limit_ = absl::make_unique<TimeLimit>(time_limit_seconds_);
@@ -207,7 +207,7 @@ class KnapsackSolver {
 // several dimensions.
 
 // ----- KnapsackAssignement -----
-/// @brief KnapsackAssignement is a small struct used to pair an item with its
+/// KnapsackAssignement is a small struct used to pair an item with its
 /// assignment.
 /// @details It is mainly used for search nodes and updates.
 struct KnapsackAssignment {
@@ -218,7 +218,7 @@ struct KnapsackAssignment {
 };
 
 // ----- KnapsackItem -----
-/// @brief KnapsackItem is a small struct to pair an item weight with its
+/// KnapsackItem is a small struct to pair an item weight with its
 /// corresponding profit.
 /// @details The aim of the knapsack problem is to pack as many valuable items as
 /// possible. A straight forward heuristic is to take those with the greatest
@@ -247,7 +247,7 @@ struct KnapsackItem {
 typedef KnapsackItem* KnapsackItemPtr;
 
 // ----- KnapsackSearchNode -----
-/// @brief KnapsackSearchNode is a class used to describe a decision in the decision
+/// KnapsackSearchNode is a class used to describe a decision in the decision
 /// search tree.
 /// @details The node is defined by a pointer to the parent search node and an
 /// assignment (see KnapsackAssignement).
@@ -293,7 +293,7 @@ class KnapsackSearchNode {
 };
 
 // ----- KnapsackSearchPath -----
-/// @brief KnapsackSearchPath is a small class used to represent the path between a
+/// KnapsackSearchPath is a small class used to represent the path between a
 /// node to another node in the search tree.
 /// @details As the solution state is not stored for each search node, the state should
 /// be rebuilt at each node. One simple solution is to apply all decisions
@@ -328,7 +328,7 @@ class KnapsackSearchPath {
 };
 
 // ----- KnapsackState -----
-/// @brief KnapsackState represents a partial solution to the knapsack problem.
+/// KnapsackState represents a partial solution to the knapsack problem.
 class KnapsackState {
  public:
   KnapsackState();
@@ -430,25 +430,25 @@ class KnapsackPropagator {
 };
 
 // ----- KnapsackCapacityPropagator -----
-// KnapsackCapacityPropagator is a KnapsackPropagator used to enforce
-// a capacity constraint.
-// As a KnapsackPropagator is supposed to compute profit lower and upper
-// bounds, and get the next item to select, it can be seen as a 0-1 Knapsack
-// solver. The most efficient way to compute the upper bound is to iterate on
-// items in profit-per-unit-weight decreasing order. The break item is
-// commonly defined as the first item for which there is not enough remaining
-// capacity. Selecting this break item as the next-item-to-assign usually
-// gives the best results (see Greenberg & Hegerich).
-//
-// This is exactly what is implemented in this class.
-//
-// When there is only one propagator, it is possible to compute a better
-// profit lower bound almost for free. During the scan to find the
-// break element all unbound items are added just as if they were part of
-// the current solution. This is used in both ComputeProfitBounds and
-// CopyCurrentSolutionPropagator.
-// For incrementality reasons, the ith item should be accessible in O(1). That's
-// the reason why the item vector has to be duplicated 'sorted_items_'.
+/// KnapsackCapacityPropagator is a KnapsackPropagator used to enforce
+/// a capacity constraint.
+/// As a KnapsackPropagator is supposed to compute profit lower and upper
+/// bounds, and get the next item to select, it can be seen as a 0-1 Knapsack
+/// solver. The most efficient way to compute the upper bound is to iterate on
+/// items in profit-per-unit-weight decreasing order. The break item is
+/// commonly defined as the first item for which there is not enough remaining
+/// capacity. Selecting this break item as the next-item-to-assign usually
+/// gives the best results (see Greenberg & Hegerich).
+///
+/// This is exactly what is implemented in this class.
+///
+/// When there is only one propagator, it is possible to compute a better
+/// profit lower bound almost for free. During the scan to find the
+/// break element all unbound items are added just as if they were part of
+/// the current solution. This is used in both ComputeProfitBounds and
+/// CopyCurrentSolutionPropagator.
+/// For incrementality reasons, the ith item should be accessible in O(1). That's
+/// the reason why the item vector has to be duplicated 'sorted_items_'.
 class KnapsackCapacityPropagator : public KnapsackPropagator {
  public:
   KnapsackCapacityPropagator(const KnapsackState& state, int64 capacity);
