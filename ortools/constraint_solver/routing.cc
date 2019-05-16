@@ -3453,7 +3453,7 @@ void RoutingModel::AssignmentToRoutes(
 }
 
 int64 RoutingModel::GetArcCostForClassInternal(
-    int64 from_index, int64 to_index, CostClassIndex cost_class_index) {
+    int64 from_index, int64 to_index, CostClassIndex cost_class_index) const {
   DCHECK(closed_);
   DCHECK_GE(cost_class_index, 0);
   DCHECK_LT(cost_class_index, cost_classes_.size());
@@ -3514,7 +3514,7 @@ int64 RoutingModel::Next(const Assignment& assignment, int64 index) const {
 }
 
 int64 RoutingModel::GetArcCostForVehicle(int64 from_index, int64 to_index,
-                                         int64 vehicle) {
+                                         int64 vehicle) const {
   if (from_index != to_index && vehicle >= 0) {
     return GetArcCostForClassInternal(from_index, to_index,
                                       GetCostClassIndexOfVehicle(vehicle));
@@ -3525,7 +3525,7 @@ int64 RoutingModel::GetArcCostForVehicle(int64 from_index, int64 to_index,
 
 int64 RoutingModel::GetArcCostForClass(
     int64 from_index, int64 to_index,
-    int64 /*CostClassIndex*/ cost_class_index) {
+    int64 /*CostClassIndex*/ cost_class_index) const {
   if (from_index != to_index) {
     return GetArcCostForClassInternal(from_index, to_index,
                                       CostClassIndex(cost_class_index));
@@ -3535,7 +3535,7 @@ int64 RoutingModel::GetArcCostForClass(
 }
 
 int64 RoutingModel::GetArcCostForFirstSolution(int64 from_index,
-                                               int64 to_index) {
+                                               int64 to_index) const {
   // Return high cost if connecting to an end (or bound-to-end) node;
   // this is used in the cost-based first solution strategies to avoid closing
   // routes too soon.
@@ -3545,7 +3545,8 @@ int64 RoutingModel::GetArcCostForFirstSolution(int64 from_index,
     std::vector<IntVar*> zero_transit(Size(), solver_->MakeIntConst(0));
     solver_->AddConstraint(solver_->MakeDelayedPathCumul(
         nexts_, active_, is_bound_to_end_, zero_transit));
-    is_bound_to_end_ct_added_.Switch(solver_.get());
+    const_cast<RoutingModel*>(this)->is_bound_to_end_ct_added_.Switch(
+        solver_.get());
   }
   if (is_bound_to_end_[to_index]->Min() == 1) return kint64max;
   // TODO(user): Take vehicle into account.

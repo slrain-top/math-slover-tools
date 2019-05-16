@@ -1059,19 +1059,20 @@ class RoutingModel {
   IntVar* CostVar() const { return cost_; }
   // Returns the cost of the transit arc between two nodes for a given vehicle.
   // Input are variable indices of node. This returns 0 if vehicle < 0.
-  int64 GetArcCostForVehicle(int64 from_index, int64 to_index, int64 vehicle);
+  int64 GetArcCostForVehicle(int64 from_index, int64 to_index,
+                             int64 vehicle) const;
   // Whether costs are homogeneous across all vehicles.
   bool CostsAreHomogeneousAcrossVehicles() const {
     return costs_are_homogeneous_across_vehicles_;
   }
   // Returns the cost of the segment between two nodes supposing all vehicle
   // costs are the same (returns the cost for the first vehicle otherwise).
-  int64 GetHomogeneousCost(int64 from_index, int64 to_index) {
+  int64 GetHomogeneousCost(int64 from_index, int64 to_index) const {
     return GetArcCostForVehicle(from_index, to_index, /*vehicle=*/0);
   }
   // Returns the cost of the arc in the context of the first solution strategy.
   // This is typically a simplification of the actual cost; see the .cc.
-  int64 GetArcCostForFirstSolution(int64 from_index, int64 to_index);
+  int64 GetArcCostForFirstSolution(int64 from_index, int64 to_index) const;
   // Returns the cost of the segment between two nodes for a given cost
   // class. Input are variable indices of nodes and the cost class.
   // Unlike GetArcCostForVehicle(), if cost_class is kNoCost, then the
@@ -1079,7 +1080,7 @@ class RoutingModel {
   // of the cost that depend on the cost class will be omited. See the code
   // for details.
   int64 GetArcCostForClass(int64 from_index, int64 to_index,
-                           int64 /*CostClassIndex*/ cost_class_index);
+                           int64 /*CostClassIndex*/ cost_class_index) const;
   // Get the cost class index of the given vehicle.
   CostClassIndex GetCostClassIndexOfVehicle(int64 vehicle) const {
     DCHECK(closed_);
@@ -1333,7 +1334,7 @@ class RoutingModel {
   void ComputeCostClasses(const RoutingSearchParameters& parameters);
   void ComputeVehicleClasses();
   int64 GetArcCostForClassInternal(int64 from_index, int64 to_index,
-                                   CostClassIndex cost_class_index);
+                                   CostClassIndex cost_class_index) const;
   void AppendHomogeneousArcCosts(const RoutingSearchParameters& parameters,
                                  int node_index,
                                  std::vector<IntVar*>* cost_elements);
@@ -1499,7 +1500,7 @@ class RoutingModel {
 #endif  // SWIG
   bool costs_are_homogeneous_across_vehicles_;
   bool cache_callbacks_;
-  std::vector<CostCacheElement> cost_cache_;  // Index by source index.
+  mutable std::vector<CostCacheElement> cost_cache_;  // Index by source index.
   std::vector<VehicleClassIndex> vehicle_class_index_of_vehicle_;
 #ifndef SWIG
   gtl::ITIVector<VehicleClassIndex, VehicleClass> vehicle_classes_;
